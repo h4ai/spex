@@ -55,7 +55,7 @@ Item files are grouped into three subdirectories under `items/`:
 | ----- | ------- |
 | `user/` | What the system does. User-visible behavior. |
 | `dev/` | How the system is built. Not user-visible. |
-| `test/` | Acceptance test cases. Each item cites the user or dev item it tests. |
+| `test/` | Acceptance testing. Each item cites the user or dev item it tests. |
 
 ### Item syntax
 
