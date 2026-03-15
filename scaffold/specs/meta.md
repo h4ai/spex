@@ -98,7 +98,7 @@ Note. \<PACK\> refers to the short form of the package name.
 
 ### META-12
 
-Item IDs shall not be modified once committed; new items shall use higher IDs per package.
+Item IDs shall not be modified once released; new items shall use higher IDs per package.
 
 ### META-13
 
