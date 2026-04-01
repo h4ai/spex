@@ -43,3 +43,10 @@ meta.md     The spec of specs
 | --- | --- | --- |
 | dev | [licensing.md](items/dev/licensing.md) | SPDX header requirements and file-scope rules |
 | test | [licensing.md](items/test/licensing.md) | Copyright and license header presence checks |
+
+### SCAF
+
+| Group | File | Summary |
+| --- | --- | --- |
+| user | [scaffold.md](items/user/scaffold.md) | Target resolution, idempotency, agent instructions, error handling |
+| dev | [scaffold.md](items/dev/scaffold.md) | Directory creation, template copying, scaffold path resolution, agent spec appending |
