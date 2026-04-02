@@ -111,29 +111,33 @@ A spec package shall define a closed set of subjects and their behaviors for a s
 
 The precondition and trigger clauses (Where, While, When; see [META-6](#meta-6)) of items shall be allowed to reference subjects and behaviors from other spec packages.
 
-## Citation
-
 ### META-15
 
-Citations to specific items shall use relative links with anchors (e.g., `[META-1](meta.md#meta-1)`).
+Each spec package shall minimize references to the containing project. When a project-specific reference is essential to a package's intent, it shall be documented in the package's `## Intent` section.
+
+## Citation
 
 ### META-16
 
-DRs and items shall be allowed to cite each other.
+Citations to specific items shall use relative links with anchors (e.g., `[META-1](meta.md#meta-1)`).
 
 ### META-17
 
-IRs shall not be cited by any spec except `map.md`.
+DRs and items shall be allowed to cite each other.
 
 ### META-18
 
-External references in specs shall cite authoritative sources (e.g., official docs) with numbered markers (e.g., `[[1]]`) linked to specific URLs in a `## References` section that shall have no uncited entries.
+IRs shall not be cited by any spec except `map.md`.
 
 ### META-19
 
+External references in specs shall cite authoritative sources (e.g., official docs) with numbered markers (e.g., `[[1]]`) linked to specific URLs in a `## References` section that shall have no uncited entries.
+
+### META-20
+
 Each test item shall include one `Verifies:` metadata line immediately below its item ID heading.
 
-The `Verifies:` line shall contain one or more comma-separated [citations](#meta-15) to the user or dev items that the test item verifies.
+The `Verifies:` line shall contain one or more comma-separated [citations](#meta-16) to the user or dev items that the test item verifies.
 
 ## References
 

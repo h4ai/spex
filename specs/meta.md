@@ -111,6 +111,10 @@ A spec package shall define a closed set of subjects and their behaviors for a s
 
 The precondition and trigger clauses (Where, While, When; see [META-6](#meta-6)) of items shall be allowed to reference subjects and behaviors from other spec packages.
 
+### META-20
+
+Each spec package shall minimize references to the containing project. When a project-specific reference is essential to a package's intent, it shall be documented in the package's `## Intent` section.
+
 ## Citation
 
 ### META-15
