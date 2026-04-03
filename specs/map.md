@@ -31,6 +31,7 @@ meta.md     The spec of specs
 | ID | File | Goal |
 | --- | --- | --- |
 | IR-000 | [000-spdx-headers.md](iterations/000-spdx-headers.md) | Add SPDX headers to applicable files |
+| IR-001 | [001-scaffold-cli.md](iterations/001-scaffold-cli.md) | Implement scaffold CLI per SCAF package |
 
 ## Packages
 
