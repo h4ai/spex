@@ -10,5 +10,6 @@ export function scaffold(pathArg?: string): void {
   // Task 4: createSpecsStructure()
   // Task 5: copyTemplates()
   // Task 6: appendAgentSpecs()
-  console.log("scaffold: not yet implemented");
+  console.error("scaffold: not yet implemented");
+  process.exit(1);
 }
