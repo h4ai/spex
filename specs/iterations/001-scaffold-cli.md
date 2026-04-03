@@ -23,8 +23,9 @@ SCAF spec package.
 ## Tasks
 
 1. **Project bootstrap** — Create `package.json` (name: `spex`,
-   bin: `spex`), `tsconfig.json` targeting ES2022/NodeNext, update
-   `.gitignore` for `dist/` and `node_modules/`
+   bin: `spex`, scripts including `build`), `tsconfig.json` targeting
+   ES2022/NodeNext, update `.gitignore` for `dist/` and
+   `node_modules/`
 
 2. **CLI entry point** — `src/cli.ts` with argument parsing;
    `scaffold [<path>]` subcommand dispatching to the scaffold module
@@ -52,12 +53,15 @@ SCAF spec package.
    stderr messages ([SCAF-6](../items/user/scaffold.md#scaf-6))
 
 8. **Build & smoke test** — `npm run build` succeeds; manual
-   `npx spex scaffold /tmp/test-target` produces expected output
+   `mkdir -p /tmp/test-target && npx spex scaffold /tmp/test-target`
+   produces expected output
 
 ## Acceptance criteria
 
 - `spex scaffold <path>` creates full specs structure in target
+- Bundled template files (e.g., `specs/map.md`) appear at destination
 - `spex scaffold` without path resolves to git root or cwd
 - Re-running scaffold skips existing entries with `(already exists)`
+- Pre-existing template files are not overwritten by a rerun
 - `CLAUDE.md`/`AGENTS.md` are created or updated with specs section
 - Invalid path exits non-zero with error on stderr
