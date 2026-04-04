@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "node --test dist/**/*.test.js",
-    "test:integration": "node --test dist/**/*.integration.test.js"
+    "test": "node --test dist/*.test.js",
+    "test:integration": "node --test dist/*.integration.test.js"
   },
   "engines": {
     "node": ">=20"
