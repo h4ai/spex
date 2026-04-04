@@ -9,6 +9,7 @@ import {
   rmSync,
   existsSync,
   mkdirSync,
+  writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
@@ -86,6 +87,20 @@ describe("createSpecsStructure", () => {
       for (const d of EXPECTED_DIRS) {
         assert.ok(existsSync(join(dir, d)), `missing after rerun: ${d}`);
       }
+    } finally {
+      rmSync(dir, { recursive: true });
+    }
+  });
+
+  // SCAF-4/SCAF-6: file-vs-directory conflict throws
+  it("throws when a path exists but is not a directory", () => {
+    const dir = makeTmp();
+    try {
+      writeFileSync(join(dir, "specs"), "not a directory");
+      assert.throws(
+        () => createSpecsStructure(dir),
+        /exists but is not a directory/,
+      );
     } finally {
       rmSync(dir, { recursive: true });
     }

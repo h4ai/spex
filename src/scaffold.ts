@@ -9,20 +9,19 @@ import { resolveBase } from "./resolve-base.js";
  * @param pathArg - Optional explicit target path
  */
 export function scaffold(pathArg?: string): void {
-  let basePath: string;
   try {
-    basePath = resolveBase(pathArg);
+    const basePath = resolveBase(pathArg);
+
+    createSpecsStructure(basePath);
+
+    // Task 5: copyTemplates()
+    // Task 6: appendAgentSpecs()
+
+    console.error("scaffold: not yet fully implemented");
+    process.exit(1);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`spex scaffold: ${msg}`);
     process.exit(1);
   }
-
-  createSpecsStructure(basePath);
-
-  // Task 5: copyTemplates()
-  // Task 6: appendAgentSpecs()
-
-  console.error("scaffold: not yet fully implemented");
-  process.exit(1);
 }

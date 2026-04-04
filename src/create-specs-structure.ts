@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: 2026 SubLang International <https://sublang.ai>
 
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 /**
@@ -27,6 +27,9 @@ export function createSpecsStructure(basePath: string): void {
   for (const dir of DIRS) {
     const target = join(basePath, dir);
     if (existsSync(target)) {
+      if (!statSync(target).isDirectory()) {
+        throw new Error(`${dir} exists but is not a directory: ${target}`);
+      }
       console.log(`  ${dir}/ (already exists)`);
     } else {
       mkdirSync(target);
