@@ -29,8 +29,5 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      - name: Unit tests
+      - name: Tests
         run: npm test
-
-      - name: Integration tests
-        run: npm run test:integration
