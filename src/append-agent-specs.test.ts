@@ -120,6 +120,41 @@ describe("appendAgentSpecs", () => {
     }
   });
 
+  // SCAF-10: replace section in CRLF file
+  it("replaces existing specs section in a CRLF file", () => {
+    const dir = makeTmp();
+    try {
+      const before =
+        "# Project\r\n\r\n## Specs (Source of Truth)\r\n\r\nOld content.\r\n\r\n## Other\r\n\r\nKeep this.\r\n";
+      writeFileSync(join(dir, "CLAUDE.md"), before);
+      appendAgentSpecs(dir);
+
+      const content = readFileSync(join(dir, "CLAUDE.md"), "utf-8");
+      assert.ok(
+        content.startsWith("# Project\r\n\r\n"),
+        "content before section should be preserved",
+      );
+      assert.ok(
+        content.includes("## Specs (Source of Truth)"),
+        "section heading should remain",
+      );
+      assert.ok(
+        content.includes("specs/map.md"),
+        "new section content should be present",
+      );
+      assert.ok(
+        content.includes("## Other\r\n\r\nKeep this.\r\n"),
+        "content after section should be preserved",
+      );
+      assert.ok(
+        !content.includes("Old content"),
+        "old section content should be replaced",
+      );
+    } finally {
+      rmSync(dir, { recursive: true });
+    }
+  });
+
   // SCAF-5/SCAF-10: section identical → skip
   it("skips file when replacement is identical", () => {
     const dir = makeTmp();
@@ -145,6 +180,32 @@ describe("appendAgentSpecs", () => {
 
       // Content should be unchanged
       assert.equal(readFileSync(join(dir, "CLAUDE.md"), "utf-8"), expected);
+    } finally {
+      rmSync(dir, { recursive: true });
+    }
+  });
+
+  // SCAF-10: prose mention of heading text should not match
+  it("appends when heading text appears only in prose", () => {
+    const dir = makeTmp();
+    try {
+      const before =
+        "# Project\n\nSee `## Specs (Source of Truth)` for details.\n";
+      writeFileSync(join(dir, "CLAUDE.md"), before);
+      appendAgentSpecs(dir);
+
+      const content = readFileSync(join(dir, "CLAUDE.md"), "utf-8");
+      // Original prose preserved
+      assert.ok(
+        content.includes("See `## Specs (Source of Truth)` for details."),
+        "prose line should remain intact",
+      );
+      // Section appended at end, not spliced into prose
+      const lastIdx = content.lastIndexOf("## Specs (Source of Truth)");
+      assert.ok(
+        lastIdx > before.length - 1,
+        "section should be appended, not matched mid-prose",
+      );
     } finally {
       rmSync(dir, { recursive: true });
     }

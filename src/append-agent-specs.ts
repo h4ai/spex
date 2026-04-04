@@ -8,19 +8,37 @@ import { getScaffoldDir } from "./copy-templates.js";
 const SECTION_HEADING = "## Specs (Source of Truth)";
 const AGENT_FILES = ["CLAUDE.md", "AGENTS.md"];
 
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 /**
  * Extract the specs section from content: from the heading to the
  * next h2 heading or end of file.
  * Returns [start, end] character offsets, or null if not found.
  */
 function findSection(content: string): [number, number] | null {
-  const idx = content.indexOf(SECTION_HEADING);
-  if (idx === -1) return null;
+  // Match only as a real H2 heading at start of a line (or start of file).
+  // Handle both LF and CRLF line endings.
+  const pattern = new RegExp(
+    `(?:^|\\r?\\n)${escapeRegExp(SECTION_HEADING)}(?:\\r?\\n|$)`,
+  );
+  const match = pattern.exec(content);
+  if (!match) return null;
+
+  // Start at the heading itself, not the preceding line ending
+  const matchText = match[0];
+  let idx = match.index;
+  if (matchText.startsWith("\r\n")) idx += 2;
+  else if (matchText.startsWith("\n")) idx += 1;
 
   // Find the next ## heading after the section heading line
   const afterHeading = idx + SECTION_HEADING.length;
-  const nextH2 = content.indexOf("\n## ", afterHeading);
-  const end = nextH2 === -1 ? content.length : nextH2;
+  const nextH2Match = content.slice(afterHeading).match(/\r?\n## /);
+  const end =
+    nextH2Match?.index !== undefined
+      ? afterHeading + nextH2Match.index
+      : content.length;
 
   return [idx, end];
 }
