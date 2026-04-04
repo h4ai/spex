@@ -3,7 +3,7 @@
 
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { execSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import {
   existsSync,
   mkdtempSync,
@@ -24,11 +24,11 @@ const CLI = resolve(
 );
 
 function run(
-  args: string,
+  args: string[],
   opts?: { cwd?: string },
 ): { stdout: string; stderr: string; exitCode: number } {
   try {
-    const stdout = execSync(`node ${CLI} ${args}`, {
+    const stdout = execFileSync(process.execPath, [CLI, ...args], {
       encoding: "utf-8",
       cwd: opts?.cwd,
       stdio: ["ignore", "pipe", "pipe"],
@@ -49,7 +49,7 @@ describe("CLI integration", () => {
   it("scaffold <path> creates specs structure and agent files", () => {
     const dir = makeTmp();
     try {
-      const result = run(`scaffold ${dir}`);
+      const result = run(["scaffold", dir]);
       assert.equal(result.exitCode, 0, `should exit 0: ${result.stderr}`);
 
       // Directories
@@ -82,13 +82,13 @@ describe("CLI integration", () => {
   it("scaffold rerun is idempotent", () => {
     const dir = makeTmp();
     try {
-      run(`scaffold ${dir}`);
+      run(["scaffold", dir]);
 
       // Modify a template file to verify it is not overwritten
       const mapPath = join(dir, "specs", "map.md");
       writeFileSync(mapPath, "# Custom\n");
 
-      const result = run(`scaffold ${dir}`);
+      const result = run(["scaffold", dir]);
       assert.equal(result.exitCode, 0);
       assert.ok(result.stdout.includes("(already exists)"));
 
@@ -104,21 +104,21 @@ describe("CLI integration", () => {
 
   // Acceptance: invalid path exits non-zero with error on stderr
   it("scaffold with nonexistent path exits non-zero", () => {
-    const result = run("scaffold /nonexistent-spex-path-xyz");
+    const result = run(["scaffold", "/nonexistent-spex-path-xyz"]);
     assert.notEqual(result.exitCode, 0);
     assert.ok(result.stderr.includes("Path does not exist"));
   });
 
   // Acceptance: unknown command exits non-zero
   it("unknown command exits non-zero", () => {
-    const result = run("bogus");
+    const result = run(["bogus"]);
     assert.notEqual(result.exitCode, 0);
     assert.ok(result.stderr.includes("Unknown command"));
   });
 
   // Acceptance: --help exits zero
   it("--help prints usage and exits zero", () => {
-    const result = run("--help");
+    const result = run(["--help"]);
     assert.equal(result.exitCode, 0);
     assert.ok(result.stdout.includes("scaffold"));
   });
@@ -130,7 +130,7 @@ describe("CLI integration", () => {
       // Init a git repo in the temp dir
       execSync("git init", { cwd: dir, stdio: "ignore" });
 
-      const result = run("scaffold", { cwd: dir });
+      const result = run(["scaffold"], { cwd: dir });
       assert.equal(result.exitCode, 0, `should exit 0: ${result.stderr}`);
       assert.ok(existsSync(join(dir, "specs", "map.md")));
     } finally {
