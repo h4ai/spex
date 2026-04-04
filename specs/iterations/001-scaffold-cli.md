@@ -14,10 +14,10 @@ SCAF spec package.
 - [x] CLI entry point with `scaffold` subcommand routing
 - [x] `createSpecsStructure()` per [SCAF-7](../items/dev/scaffold.md#scaf-7)
 - [x] `copyTemplates()` per [SCAF-8](../items/dev/scaffold.md#scaf-8), [SCAF-9](../items/dev/scaffold.md#scaf-9)
-- [ ] `appendAgentSpecs()` per [SCAF-10](../items/dev/scaffold.md#scaf-10)
+- [x] `appendAgentSpecs()` per [SCAF-10](../items/dev/scaffold.md#scaf-10)
 - [x] Target resolution per [SCAF-1](../items/user/scaffold.md#scaf-1), [SCAF-2](../items/user/scaffold.md#scaf-2), [SCAF-3](../items/user/scaffold.md#scaf-3)
 - [x] Idempotency per [SCAF-4](../items/user/scaffold.md#scaf-4)
-- [ ] Agent instructions per [SCAF-5](../items/user/scaffold.md#scaf-5)
+- [x] Agent instructions per [SCAF-5](../items/user/scaffold.md#scaf-5)
 - [ ] Error handling per [SCAF-6](../items/user/scaffold.md#scaf-6)
 
 ## Tasks
