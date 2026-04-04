@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: 2026 SubLang International <https://sublang.ai>
 
 import { copyFileSync, existsSync, readdirSync, statSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, posix, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 /**
@@ -34,7 +34,7 @@ function copyRecursive(
 
     const srcPath = join(srcDir, entry);
     const destPath = join(destDir, entry);
-    const relPath = join(relRoot, entry);
+    const relPath = posix.join(relRoot, entry);
 
     if (statSync(srcPath).isDirectory()) {
       copyRecursive(srcPath, destPath, relPath);
