@@ -67,17 +67,21 @@ The `package.json` `files` field shall exclude test files and build artifacts no
 
 Where the release workflow validates the package, it shall verify that the tarball contains no test files and no source files that are not required at runtime.
 
-## Pre-release Checklist
-
 ### RELEASE-14
 
-When preparing a release tag, the developer/agent shall verify that all tests pass and all changes are committed and pushed to `main`.
+The published package shall include a `README.md` that documents what the tool does, how to install it, and how to use it. The README shall be kept up to date with the current feature set before each release.
+
+## Pre-release Checklist
 
 ### RELEASE-15
 
-When preparing a release tag, the developer/agent shall verify that `CHANGELOG.md` is updated with the new version and date, and `package.json` version is bumped.
+When preparing a release tag, the developer/agent shall verify that all tests pass and all changes are committed and pushed to `main`.
 
 ### RELEASE-16
+
+When preparing a release tag, the developer/agent shall verify that `CHANGELOG.md` is updated with the new version and date, and `package.json` version is bumped.
+
+### RELEASE-17
 
 When preparing a release tag, the developer/agent shall verify that the tarball contains only production files (e.g., via `npm pack --dry-run`).
 
