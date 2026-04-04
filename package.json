@@ -1,5 +1,5 @@
 {
-  "name": "spex",
+  "name": "@sublang/spex",
   "version": "0.1.0",
   "description": "Spec framework CLI",
   "type": "module",
@@ -8,11 +8,15 @@
     "spex": "dist/cli.js"
   },
   "files": [
-    "dist/",
+    "dist/**/*.js",
+    "!dist/**/*.test.js",
+    "dist/**/*.d.ts",
+    "!dist/**/*.test.d.ts",
     "scaffold/"
   ],
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "npm run build && npm test",
     "test": "node scripts/run-tests.cjs",
     "test:integration": "node scripts/run-tests.cjs \"\\.integration\\.test\\.js$\""
   },
