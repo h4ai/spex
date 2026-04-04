@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: 2026 SubLang International <https://sublang.ai>
 
+import { copyTemplates } from "./copy-templates.js";
 import { createSpecsStructure } from "./create-specs-structure.js";
 import { resolveBase } from "./resolve-base.js";
 
@@ -13,8 +14,8 @@ export function scaffold(pathArg?: string): void {
     const basePath = resolveBase(pathArg);
 
     createSpecsStructure(basePath);
+    copyTemplates(basePath);
 
-    // Task 5: copyTemplates()
     // Task 6: appendAgentSpecs()
 
     console.error("scaffold: not yet fully implemented");
