@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-04-05
+
+### Fixed
+
+- Release workflow now ensures npm >= 11.5.1 for OIDC trusted publishing
+
 ## [0.1.1] - 2026-04-05
 
 ### Changed
@@ -32,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Integration tests exercising the CLI binary end-to-end
 - RELEASE spec package with package hygiene and pre-release checks
 
-[Unreleased]: https://github.com/sublang-ai/spex/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/sublang-ai/spex/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/sublang-ai/spex/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/sublang-ai/spex/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/sublang-ai/spex/releases/tag/v0.1.0
