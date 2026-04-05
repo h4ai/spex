@@ -39,15 +39,24 @@ This creates:
 
 See `specs/decisions/000-spec-structure-format.md` for the spec format and naming conventions.
 
+Idempotency: Rerunning is safe — existing files and directories are skipped.
+
 **Try it:** review the sample iteration `specs/iterations/000-spdx-headers.md`, update the copyright text, then prompt your AI coding agent:
 
 ```text
 Complete Iteration #0
 ```
 
-### Idempotency
+## Workflow
 
-Rerunning is safe — existing files and directories are skipped.
+Spex does *not* enforce a heavyweight workflow.
+We believe spec-driven development is a flexible combination of a few primitives.
+
+1. **Make Decisions** — Discuss requirements, architecture, and design with AI agents. Let AI generate and review decision records in `specs/decisions/`.
+2. **Plan Iterations** — Break down work into tasks with AI agents. Let AI generate and review iteration records in `specs/iterations/`.
+3. **Agents Execute** — Let AI agents complete the tasks autonomously. They generate code and update `specs/items/`.
+
+Then loop back to the next decision or iteration.
 
 ## Requirements
 
