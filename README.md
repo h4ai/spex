@@ -12,6 +12,22 @@
 Scaffolds a `specs/` directory so AI coding agents can read and follow
 your project's requirements and design.
 
+### 🆕 Spec-Driven Development Pipeline (h4ai fork)
+
+This fork adds a **four-layer traceable pipeline** from human-confirmed requirements to Ralph-executable prd.json:
+
+```
+docs/requirements.md  (human confirmed)
+    ↓
+specs/decisions/      (GEARS behavioral specs)
+    ↓
+specs/iterations/     (User Stories, human-readable)
+    ↓
+scripts/ralph/prd.json  (machine-executable, with source traceability)
+```
+
+See [`skills/spec-driven-dev/SKILL.md`](./skills/spec-driven-dev/SKILL.md) for the complete workflow.
+
 ## Install
 
 ```sh
