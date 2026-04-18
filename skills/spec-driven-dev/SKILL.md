@@ -253,6 +253,78 @@ cat scripts/ralph/prd.json | jq '.userStories[] | {id, title, passes}'
 
 ---
 
+---
+
+## TDD Verification System — Synchronized with GEARS Execution
+
+验证分五层，前三层可在 Agent 执行任务时**同步完成**，后两层异步。
+
+### Verification Layers
+
+| Layer | 手段 | 同步方式 | 耗时 |
+|-------|------|---------|------|
+| **L0** | 编译 / 类型检查 | 每次文件保存后自动 `tsc --noEmit` | 秒级 |
+| **L1** | 单元测试 | TDD 红→绿→重构，每实现一个函数先写测试 | 秒~分钟 |
+| **L2** | 集成测试 | API 端点写完立即跑 pytest / vitest 验证请求响应 | 分钟级 |
+| **L3** | E2E 浏览器 *(半同步)* | Playwright，整个 Story 完成后跑一次 | 1-3 分钟 |
+| **L3.5** | 截图对比 *(半同步)* | Playwright screenshot + 与基线比对 | 1 分钟 |
+| **L4** | 可观测性 *(异步)* | 日志 / metrics，需真实流量，开发时无法模拟 | 运行时 |
+| **L5** | 人工审查 *(异步)* | 架构决策、产品品味，AI 无法自判 | 人工 |
+
+**L0-L2 完全同步**，L3 / L3.5 半同步（Story 级别），L4-L5 异步。  
+Agent 交付时已通过前 3 层验证，人只需做 L5 最终审查。
+
+---
+
+### Agent Execution Loop per GEARS Story
+
+Each story in `prd.json` must follow this exact TDD loop:
+
+```plain
+1. 读 GEARS 行为描述 + AC（specs/decisions/001-*.md）
+2. 🔴 先写失败测试（单元 + 集成）
+   → git commit "test: add failing test for <STORY-ID>"
+3. 🟢 写最少代码让测试通过
+   → git commit "feat: implement <STORY-ID>"
+4. 🔵 重构（可选）
+   → git commit "refactor: clean <STORY-ID>"
+5. ✅ tsc --noEmit + 全量测试通过（L0 + L1 + L2）
+6. 📸 如果有 UI → 跑 Playwright + 截图（L3）
+   → git commit "test: e2e <STORY-ID>"
+7. 标记 prd.json 中该 story 的 "passes": true
+```
+
+**每个 GEARS AC 对应一个可运行的测试**。`passes: true` = 测试全绿 + typecheck 通过，不是人工目测。
+
+---
+
+### Commit Convention (Auditable Trail)
+
+For **金融 / 大型复杂项目** where every AI step must be traceable and auditable:
+
+```
+test:   add failing test for AUTH-001          ← L1/L2 Red
+feat:   implement AUTH-001                     ← Green
+refactor: clean AUTH-001                       ← Blue (optional)
+test:   e2e AUTH-001                           ← L3 Playwright
+```
+
+Git history = complete, per-story audit trail with GEARS source traceability:
+
+```
+Layer 1 (requirements.md)
+  └── Layer 2 (GEARS+AC in specs/decisions/)
+        └── Layer 3 (prd.json story "source" field)
+              └── Git commits (test→feat→e2e per story)
+                    └── CI (L0 typecheck + L1/L2 tests always green)
+```
+
+This satisfies auditability requirements: every production line of code maps back to a confirmed requirement via `source` field.
+
+---
+
+---
+
 ## Validation Checklist (before Step 8)
 
 - [ ] requirements.md confirmed by product owner
