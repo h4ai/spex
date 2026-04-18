@@ -14,17 +14,25 @@ your project's requirements and design.
 
 ### 🆕 Spec-Driven Development Pipeline (h4ai fork)
 
-This fork adds a **four-layer traceable pipeline** from human-confirmed requirements to Ralph-executable prd.json:
+This fork adds a **three-layer traceable pipeline** from human-confirmed requirements to Ralph-executable prd.json:
 
 ```
-docs/requirements.md  (human confirmed)
+Layer 1: docs/requirements.md        (human confirmed, READ-ONLY for AI)
     ↓
-specs/decisions/      (GEARS behavioral specs)
+Layer 2: specs/decisions/            (GEARS behavioral specs + AC + Source)
     ↓
-specs/iterations/     (User Stories, human-readable)
+Layer 3: scripts/ralph/prd.json      (machine-executable, with source traceability)
     ↓
-scripts/ralph/prd.json  (machine-executable, with source traceability)
+    🤖 ralph.sh  (autonomous development loop)
 ```
+
+**Layer 2 format** — each functional area contains:
+- **Behavior (GEARS):** `[Where/While/When] The <subject> shall <behavior>`
+- **Acceptance Criteria:** testable, checkboxed items
+- **Source:** traceability back to exact `requirements.md` section
+
+User Stories (`As a … I want …`) have been removed. GEARS + AC provides full traceability
+suitable for financial compliance and audit without the overhead of an extra layer.
 
 See [`skills/spec-driven-dev/SKILL.md`](./skills/spec-driven-dev/SKILL.md) for the complete workflow.
 

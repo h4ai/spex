@@ -7,33 +7,46 @@ Accepted
 ## Context
 
 AI coding agents need a structured, traceable spec layer to build software reliably.
-This project uses a four-layer document architecture to ensure human-confirmed requirements
+This project uses a three-layer document architecture to ensure human-confirmed requirements
 flow correctly into executable development tasks.
 
 ## Decision
 
-### Four-Layer Architecture
+### Three-Layer Architecture
 
 ```
-Layer 1: requirements.md          ← Human-confirmed requirements (source of truth)
-         ↓ (manual/AI transform)
-Layer 2: specs/decisions/          ← GEARS format specs (AI-parseable)
-         ↓ (manual/AI split)
-Layer 3: specs/iterations/         ← User Stories in Markdown (human-readable)
-         ↓ (/ralph skill convert)
-Layer 4: scripts/ralph/prd.json   ← Ralph execution format (machine-executable)
+Layer 1: requirements.md             ← Human-confirmed requirements (source of truth)
+         ↓ (this skill: Steps 2–3)
+Layer 2: specs/decisions/            ← GEARS behavioral specs + AC (AI-parseable, traceable)
+         ↓ (this skill: Step 5, /ralph)
+Layer 3: scripts/ralph/prd.json      ← Ralph execution format (machine-executable)
 ```
 
-### GEARS Format (Layer 2)
+### Layer 2 Format: GEARS + AC
 
-Use the following sentence patterns for all behavioral specs:
+Each functional area uses three sections:
 
-```
+```markdown
+## <Functional Area>
+
+### Behavior (GEARS)
+
+\`\`\`gears
 [Where <static precondition>] [While <stateful precondition>] [When <trigger>]
 The <subject> shall <behavior>
+\`\`\`
+
+### Acceptance Criteria
+
+- [ ] Specific testable criterion
+- [ ] Typecheck passes
+
+### Source
+
+> requirements.md §<section name>
 ```
 
-Examples:
+**GEARS syntax:**
 ```
 When the user submits username and password,
 the authentication service shall validate credentials against LDAP
@@ -43,33 +56,13 @@ Where the user does not have admin role,
 the system shall not render or expose any admin menu items.
 ```
 
-### User Story Format (Layer 3)
-
-Each story must fit within one AI context window. Format:
-
-```markdown
-### US-NNN: Story Title
-As a <role>, I want <goal> so that <benefit>.
-
-**Acceptance Criteria:**
-- [ ] Specific, testable criterion
-- [ ] Typecheck passes
-- [ ] Verify in browser using dev-browser skill
-```
-
 ### Traceability (source field)
 
-Every User Story must include a `source` field in prd.json pointing to
-the requirements.md section it originates from.
+Every `specs/decisions/` section and every `prd.json` story must have a `source` pointing
+back to the exact `requirements.md` section. This enables audit and compliance traceability.
 
-### Human Confirmation Points
+### No User Stories
 
-- Layer 1 (requirements.md): Must be confirmed by product owner before conversion
-- Layer 3 (iterations): Recommended spot-check before starting development
-- Mapping table (docs/requirements-mapping.md): Use for traceability review
-
-## References
-
-- GEARS syntax: https://github.com/sublang-ai/spex
-- Ralph: https://github.com/snarktank/ralph
-- spex: https://github.com/sublang-ai/spex
+User Stories (`As a … I want …`) have been removed from the pipeline.
+GEARS behavioral specs are sufficient for both human readability and AI execution.
+AC items in Layer 2 map 1:1 to prd.json `acceptanceCriteria`.
